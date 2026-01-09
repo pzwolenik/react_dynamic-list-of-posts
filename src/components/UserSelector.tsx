@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { User } from '../types/User';
 import classNames from 'classnames';
@@ -66,4 +67,17 @@ export const UserSelector = ({
       </div>
     </div>
   );
+};
+
+UserSelector.propTypes = {
+  userList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      username: PropTypes.string,
+      email: PropTypes.string,
+    }).isRequired,
+  ).isRequired,
+  setSelectedUserId: PropTypes.func.isRequired,
+  selectedUserId: PropTypes.number,
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import classNames from 'classnames';
 import { Comment } from '../types/Comment';
@@ -54,6 +55,9 @@ export const NewCommentForm = ({ onAdd, postId }: Props) => {
         onAdd(commentFromApi);
         setBody('');
         setErrors(prev => ({ ...prev, body: false }));
+      })
+      .catch(() => {
+        alert('Could not add a comment');
       })
       .finally(() => setIsSubmitting(false));
   };
@@ -196,4 +200,9 @@ export const NewCommentForm = ({ onAdd, postId }: Props) => {
       </div>
     </form>
   );
+};
+
+NewCommentForm.propTypes = {
+  onAdd: PropTypes.func.isRequired,
+  postId: PropTypes.number.isRequired,
 };

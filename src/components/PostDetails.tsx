@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { client } from '../utils/fetchClient';
 import { Comment } from '../types/Comment';
@@ -34,14 +35,15 @@ export const PostDetails = ({ post }: Props) => {
   };
 
   const handleDelete = (commentId: number) => {
+    const commentsBackup = [...comments];
+
+    setComments(prev => prev.filter(c => c.id !== commentId));
     setDeletingId(commentId);
 
     client
       .delete(`/comments/${commentId}`)
-      .then(() => {
-        setComments(prev => prev.filter(c => c.id !== commentId));
-      })
       .catch(() => {
+        setComments(commentsBackup);
         alert('Could not delete comment');
       })
       .finally(() => setDeletingId(null));
@@ -124,4 +126,13 @@ export const PostDetails = ({ post }: Props) => {
       </div>
     </div>
   );
+};
+
+PostDetails.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    userId: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+  }).isRequired,
 };
